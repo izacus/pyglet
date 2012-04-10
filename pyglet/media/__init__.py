@@ -1377,16 +1377,16 @@ class AbstractSourceLoader(object):
         raise NotImplementedError('abstract')
 
 class AVbinSourceLoader(AbstractSourceLoader):
-    def load(self, filename, file):
+    def load(self, filename, file, skip_video=False):
         import avbin
-        return avbin.AVbinSource(filename, file)
+        return avbin.AVbinSource(filename, file, skip_video=skip_video)
 
 class RIFFSourceLoader(AbstractSourceLoader):
-    def load(self, filename, file):
+    def load(self, filename, file, skip_video=False):
         import riff
         return riff.WaveSource(filename, file)
     
-def load(filename, file=None, streaming=True):
+def load(filename, file=None, streaming=True, skip_video = False):
     '''Load a source from a file.
 
     Currently the `file` argument is not supported; media files must exist
@@ -1400,10 +1400,12 @@ def load(filename, file=None, streaming=True):
         `streaming` : bool
             If False, a `StaticSource` will be returned; otherwise (default) a
             `StreamingSource` is created.
+        `skip_video` : bool
+            If True, video will not be decoded, useful for audio extraction
 
     :rtype: `Source`
     '''
-    source = get_source_loader().load(filename, file)
+    source = get_source_loader().load(filename, file, skip_video=skip_video)
     if not streaming:
         source = StaticSource(source)
     return source

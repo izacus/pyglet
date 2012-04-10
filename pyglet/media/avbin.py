@@ -224,7 +224,7 @@ class VideoPacket(object):
         self.__class__._next_id += 1
 
 class AVbinSource(StreamingSource):
-    def __init__(self, filename, file=None):
+    def __init__(self, filename, file=None, skip_video=False):
         if file is not None:
             raise NotImplementedError('TODO: Load from file stream')
 
@@ -236,6 +236,7 @@ class AVbinSource(StreamingSource):
         self._video_stream_index = -1
         self._audio_stream = None
         self._audio_stream_index = -1
+        self._skip_video = False
 
         file_info = AVbinFileInfo()
         file_info.structure_size = ctypes.sizeof(file_info)
@@ -380,10 +381,10 @@ class AVbinSource(StreamingSource):
 
             self._video_timestamp = max(self._video_timestamp,
                                         video_packet.timestamp)
+
             self._video_packets.append(video_packet)
             self._decode_thread.put_job(
                 lambda: self._decode_video_packet(video_packet))
-
             return 'video', video_packet
 
         elif self._packet.stream_index == self._audio_stream_index:
@@ -485,20 +486,22 @@ class AVbinSource(StreamingSource):
             return AudioData(buffer, len(buffer), timestamp, duration, []) 
 
     def _decode_video_packet(self, packet):
-        width = self.video_format.width
-        height = self.video_format.height
-        pitch = width * 3
-        buffer = (ctypes.c_uint8 * (pitch * height))()
-        result = av.avbin_decode_video(self._video_stream, 
-                                       packet.data, packet.size, 
-                                       buffer)
-        if result < 0:
+        if self._skip_video:
             image_data = None
         else:
-            image_data = image.ImageData(width, height, 'RGB', buffer, pitch)
-            
-        packet.image = image_data
+            width = self.video_format.width
+            height = self.video_format.height
+            pitch = width * 3
+            buffer = (ctypes.c_uint8 * (pitch * height))()
+            result = av.avbin_decode_video(self._video_stream,
+                                           packet.data, packet.size,
+                                           buffer)
+            if result < 0:
+                image_data = None
+            else:
+                image_data = image.ImageData(width, height, 'RGB', buffer, pitch)
 
+        packet.image = image_data
         # Notify get_next_video_frame() that another one is ready.
         self._condition.acquire()
         self._condition.notify()
