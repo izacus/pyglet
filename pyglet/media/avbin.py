@@ -236,7 +236,7 @@ class AVbinSource(StreamingSource):
         self._video_stream_index = -1
         self._audio_stream = None
         self._audio_stream_index = -1
-        self._skip_video = False
+        self._skip_video = skip_video
 
         file_info = AVbinFileInfo()
         file_info.structure_size = ctypes.sizeof(file_info)
