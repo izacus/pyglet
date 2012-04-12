@@ -385,10 +385,10 @@ class AVbinSource(StreamingSource):
         player._texture.tex_coords = t[9:12] + t[6:9] + t[3:6] + t[:3]
 
     def _decode_video_packet(self, packet):
-        if self._skip_video:
-            return None
-
         timestamp = timestamp_from_avbin(packet.timestamp)
+        if self._skip_video:
+            return BufferedImage(None, timestamp)
+
         width = self.video_format.width
         height = self.video_format.height
         pitch = width * 3
