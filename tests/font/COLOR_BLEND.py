@@ -5,7 +5,7 @@ appear at 0.1 opacity (faint white)
 '''
 
 __docformat__ = 'restructuredtext'
-__version__ = '$Id$'
+__version__ = '$Id: COLOR_BLEND.py 932 2007-06-25 05:41:34Z Alex.Holkner $'
 
 import unittest
 import base_text

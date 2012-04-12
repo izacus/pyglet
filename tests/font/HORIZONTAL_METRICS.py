@@ -10,7 +10,7 @@ Press ESC to end the test.
 '''
 
 __docformat__ = 'restructuredtext'
-__version__ = '$Id$'
+__version__ = '$Id: HORIZONTAL_METRICS.py 967 2007-06-28 03:02:44Z Alex.Holkner $'
 
 import os
 import unittest

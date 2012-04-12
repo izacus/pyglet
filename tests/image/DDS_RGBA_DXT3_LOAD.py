@@ -5,7 +5,7 @@ rgba_dxt3.dds image on a checkboard background.
 '''
 
 __docformat__ = 'restructuredtext'
-__version__ = '$Id$'
+__version__ = '$Id: DDS_RGBA_DXT3_LOAD.py 823 2007-05-09 13:01:58Z Alex.Holkner $'
 
 import unittest
 import base_load

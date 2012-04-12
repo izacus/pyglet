@@ -11,7 +11,7 @@ Expected behaviour:
 '''
 
 __docformat__ = 'restructuredtext'
-__version__ = '$Id$'
+__version__ = '$Id: WINDOW_SET_MOUSE_VISIBLE.py 750 2007-03-17 01:16:12Z Alex.Holkner $'
 
 import unittest
 

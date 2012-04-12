@@ -43,7 +43,7 @@ If the filename is omitted, a sample animation is loaded
 '''
 
 __docformat__ = 'restructuredtext'
-__version__ = '$Id$'
+__version__ = '$Id: animation.py 1967 2008-03-23 07:02:51Z Alex.Holkner $'
 
 # The dinosaur.gif file packaged alongside this script is in the public
 # domain, it was obtained from http://www.gifanimations.com/.

@@ -5,7 +5,7 @@ appear blue.
 '''
 
 __docformat__ = 'restructuredtext'
-__version__ = '$Id$'
+__version__ = '$Id: COLOR.py 932 2007-06-25 05:41:34Z Alex.Holkner $'
 
 import unittest
 import base_text

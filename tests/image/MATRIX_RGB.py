@@ -8,7 +8,7 @@ end the test.
 '''
 
 __docformat__ = 'restructuredtext'
-__version__ = '$Id$'
+__version__ = '$Id: MATRIX_RGB.py 1393 2007-11-10 01:09:58Z Alex.Holkner $'
 
 import unittest
 import base_load

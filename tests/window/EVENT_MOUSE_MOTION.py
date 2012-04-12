@@ -5,9 +5,8 @@
 Expected behaviour:
     One window will be opened.  Move the mouse in and out of this window
     and ensure the absolute and relative coordinates are correct.
-     - Absolute coordinates should have (0,0) at bottom-left of client area
-       of window with positive y-axis pointing up and positive x-axis right.
-     - Relative coordinates should be positive when moving up and right.
+     - Absolute coordinates relative to 0,0 at bottom-left of client area
+       of window.
 
     Close the window or press ESC to end the test.
 '''

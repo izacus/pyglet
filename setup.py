@@ -4,14 +4,14 @@
 '''
 
 __docformat__ = 'restructuredtext'
-__version__ = '$Id$'
+__version__ = '$Id: setup.py 2530 2009-10-18 01:39:18Z benjamin.coder.smith $'
 
 import os
 import shutil
 import sys
 
 # Bump pyglet/__init__.py version as well.
-VERSION = '1.2dev'
+VERSION = '1.1.4'
 
 long_description = '''pyglet provides an object-oriented programming
 interface for developing games and other visually-rich applications
@@ -47,27 +47,20 @@ setup_info = dict(
     packages=[
         'pyglet', 
         'pyglet.app',
-        'pyglet.canvas',
         'pyglet.font', 
         'pyglet.gl', 
         'pyglet.graphics',
         'pyglet.image', 
         'pyglet.image.codecs',
-        'pyglet.input',
-        'pyglet.libs',
-        'pyglet.libs.darwin',
-        'pyglet.libs.win32',
-        'pyglet.libs.x11',
         'pyglet.media', 
         'pyglet.media.drivers', 
+        'pyglet.media.drivers.alsa', 
         'pyglet.media.drivers.directsound', 
         'pyglet.media.drivers.openal', 
-        'pyglet.media.drivers.pulse', 
         'pyglet.text',
         'pyglet.text.formats',
         'pyglet.window', 
         'pyglet.window.carbon',
-        'pyglet.window.cocoa',
         'pyglet.window.win32', 
         'pyglet.window.xlib',
     ],
@@ -255,8 +248,7 @@ elif 'bdist_mpkg' in sys.argv:
                 'pyglet for MacPorts Python 2.5 in /opt/local')
             add_package(
                 '/opt/local/',
-                '/opt/local/Library/Frameworks/Python.framework/Versions/2.6' \
-                    '/lib/python2.6/site-packages',
+                '/opt/local/lib/python2.6/site-packages',
                 '2.6', 'pyglet-macports-py2.6',
                 'pyglet for MacPorts Python 2.6 in /opt/local')
  
@@ -289,13 +281,5 @@ if _have_setuptools:
     setup_info.update(dict(
         install_requires=install_requires,
     ))
-
-if sys.version_info >= (3,):
-    # Automatically run 2to3 when using Python 3
-    if _have_setuptools:
-        setup_info["use_2to3"] = True
-    else:
-        from distutils.command.build_py import build_py_2to3
-        setup_info["cmdclass"] = {"build_py" : build_py_2to3}
 
 setup(**setup_info)

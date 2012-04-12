@@ -6,7 +6,7 @@ may have larger dimensions due to texture size restrictions.
 '''
 
 __docformat__ = 'restructuredtext'
-__version__ = '$Id$'
+__version__ = '$Id: PYPNG_LA_SAVE.py 661 2007-02-17 00:23:30Z Alex.Holkner $'
 
 import unittest
 import base_save

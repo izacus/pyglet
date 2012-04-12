@@ -7,7 +7,7 @@ Expected behaviour:
     event is printed to the terminal.  The window should not close
     when you do this.
 
-    Press ESC to end the test.
+    Click Left mouse button to end the test.
 '''
 
 __docformat__ = 'restructuredtext'

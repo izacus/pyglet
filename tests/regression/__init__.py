@@ -4,7 +4,7 @@
 '''
 
 __docformat__ = 'restructuredtext'
-__version__ = '$Id$'
+__version__ = '$Id: __init__.py 661 2007-02-17 00:23:30Z Alex.Holkner $'
 
 import unittest
 

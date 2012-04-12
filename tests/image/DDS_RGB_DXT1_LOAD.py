@@ -5,7 +5,7 @@ rgb_dxt1.dds image.
 '''
 
 __docformat__ = 'restructuredtext'
-__version__ = '$Id$'
+__version__ = '$Id: DDS_RGB_DXT1_LOAD.py 823 2007-05-09 13:01:58Z Alex.Holkner $'
 
 import unittest
 import base_load

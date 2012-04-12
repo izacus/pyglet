@@ -10,7 +10,7 @@ Expected behaviour:
 '''
 
 __docformat__ = 'restructuredtext'
-__version__ = '$Id$'
+__version__ = '$Id: WINDOW_SET_MOUSE_CURSOR.py 763 2007-03-26 07:58:00Z Alex.Holkner $'
 
 import unittest
 

@@ -4,7 +4,7 @@
 '''
 
 __docformat__ = 'restructuredtext'
-__version__ = '$Id$'
+__version__ = '$Id: FPS_LIMIT.py 748 2007-03-14 14:58:46Z Alex.Holkner $'
 
 import time
 import unittest

@@ -65,7 +65,7 @@ INITIAL_ASTEROIDS = [2, 3, 4, 5]
 ASTEROID_DEBRIS_COUNT = 3
 MAX_DIFFICULTY = len(INITIAL_ASTEROIDS) - 1
 
-ARENA_WIDTH = 640
+ARENA_WIDTH = 480
 ARENA_HEIGHT = 480
 
 KEY_FIRE = key.SPACE
@@ -117,7 +117,7 @@ class WrappingSprite(pyglet.sprite.Sprite):
 
     def __init__(self, img, x, y, batch=None):
         super(WrappingSprite, self).__init__(img, x, y, batch=batch)
-        self.collision_radius = self.image.width // COLLISION_RESOLUTION // 2 
+        self.collision_radius = self.image.width / COLLISION_RESOLUTION / 2 
 
     def update(self, dt):
         x = self.x + self.dx * dt
@@ -172,14 +172,14 @@ class Asteroid(WrappingSprite):
 
 class Player(WrappingSprite, key.KeyStateHandler):
     def __init__(self, img, batch=None):
-        super(Player, self).__init__(img, ARENA_WIDTH // 2, ARENA_HEIGHT // 2,
+        super(Player, self).__init__(img, ARENA_WIDTH / 2, ARENA_HEIGHT / 2,
             batch=batch)
         center_anchor(img)
         self.reset()
 
     def reset(self):
-        self.x = ARENA_WIDTH // 2
-        self.y = ARENA_HEIGHT // 2
+        self.x = ARENA_WIDTH / 2
+        self.y = ARENA_HEIGHT / 2
         self.dx = 0
         self.dy = 0
         self.rotation = 0
@@ -282,7 +282,7 @@ class Starfield(object):
         glPushMatrix()
         glTranslatef(self.x, self.y, 0)
         
-        self.img.blit(0, 0, width=ARENA_WIDTH, height=ARENA_HEIGHT)
+        self.img.blit(0, 0, 0)
         
         glPopMatrix()
         glMatrixMode(GL_MODELVIEW)
@@ -303,8 +303,8 @@ class Banner(Overlay):
         self.text = pyglet.text.Label(label,
                                       font_name=FONT_NAME,
                                       font_size=36,
-                                      x=ARENA_WIDTH // 2, 
-                                      y=ARENA_HEIGHT // 2,
+                                      x=ARENA_WIDTH / 2, 
+                                      y=ARENA_HEIGHT / 2,
                                       anchor_x='center',
                                       anchor_y='center')
 
@@ -341,14 +341,13 @@ class Menu(Overlay):
             self.selected_index += 1
         elif symbol == key.UP:
             self.selected_index -= 1
+        else:
+            self.items[self.selected_index].on_key_press(symbol, modifiers)
         self.selected_index = min(max(self.selected_index, 0), 
                                   len(self.items) - 1)
 
         if symbol in (key.DOWN, key.UP) and enable_sound:
             bullet_sound.play()
-
-    def on_key_release(self, symbol, modifiers):
-        self.items[self.selected_index].on_key_release(symbol, modifiers)
 
     def draw(self):
         self.title_text.draw()
@@ -385,19 +384,19 @@ class MenuItem(object):
 
         if selected:
             self.draw_pointer(
-                self.text.x - self.text.content_width // 2 - 
-                    pointer_image.width // 2,
+                self.text.x - self.text.content_width / 2 - 
+                    pointer_image.width / 2,
                 self.y, 
                 self.pointer_color,
                 self.inverted_pointers)
             self.draw_pointer(
-                self.text.x + self.text.content_width // 2 + 
-                    pointer_image.width // 2,
+                self.text.x + self.text.content_width / 2 + 
+                    pointer_image.width / 2,
                 self.y,
                 self.pointer_color,
                 not self.inverted_pointers)
 
-    def on_key_release(self, symbol, modifiers):
+    def on_key_press(self, symbol, modifiers):
         if symbol == key.ENTER and self.activate_func:
             self.activate_func()
             if enable_sound:
@@ -416,7 +415,7 @@ class ToggleMenuItem(MenuItem):
     def get_label(self):
         return self.label + (self.value and ': ON' or ': OFF')
 
-    def on_key_release(self, symbol, modifiers):
+    def on_key_press(self, symbol, modifiers):
         if symbol == key.LEFT or symbol == key.RIGHT:
             self.value = not self.value
             self.text.text = self.get_label()
@@ -443,7 +442,7 @@ class DifficultyMenuItem(MenuItem):
         else:
             return 'Difficulty: %d' % difficulty
 
-    def on_key_release(self, symbol, modifiers):
+    def on_key_press(self, symbol, modifiers):
         global difficulty
         if symbol == key.LEFT:
             difficulty -= 1
@@ -476,20 +475,15 @@ class OptionsMenu(Menu):
             enable_sound = value
         self.items.append(ToggleMenuItem('Sound', enable_sound, 240,
                                          set_enable_sound))
-
-        def set_enable_fullscreen(value):
-            win.set_fullscreen(value, width=ARENA_WIDTH, height=ARENA_HEIGHT)
-        self.items.append(ToggleMenuItem('Fullscreen', win.fullscreen, 200,
-                                         set_enable_fullscreen))
                                 
-        self.items.append(ToggleMenuItem('Vsync', win.vsync, 160, 
+        self.items.append(ToggleMenuItem('Vsync', win.vsync, 200, 
                                          win.set_vsync))
 
         def set_show_fps(value):
             global show_fps
             show_fps = value
-        self.items.append(ToggleMenuItem('FPS', show_fps, 120, set_show_fps))
-        self.items.append(MenuItem('Ok', 60, begin_main_menu))
+        self.items.append(ToggleMenuItem('FPS', show_fps, 160, set_show_fps))
+        self.items.append(MenuItem('Ok', 100, begin_main_menu))
         self.reset()
 
 class InstructionsMenu(Menu):
@@ -770,7 +764,7 @@ resource.reindex()
 asteroid_sizes = [AsteroidSize('asteroid1.png', 100),
                   AsteroidSize('asteroid2.png', 50),
                   AsteroidSize('asteroid3.png', 10)]
-for small, big in zip(asteroid_sizes[:-1], asteroid_sizes[1:]):
+for small, big in map(None, asteroid_sizes[:-1], asteroid_sizes[1:]):
     big.next_size = small
 
 bullet_image = resource.image('bullet.png')
@@ -778,8 +772,7 @@ center_anchor(bullet_image)
 
 smoke_images_image = resource.image('smoke.png')
 smoke_images = pyglet.image.ImageGrid(smoke_images_image, 1, 8)
-for smoke_image in smoke_images:
-    center_anchor(smoke_image)
+map(center_anchor, smoke_images)
 smoke_animation = \
     pyglet.image.Animation.from_image_sequence(smoke_images,
                                                SMOKE_ANIMATION_PERIOD,
@@ -788,8 +781,7 @@ smoke_animation = \
 explosion_images_image = resource.image('explosion.png')
 explosion_images = pyglet.image.ImageGrid(explosion_images_image, 2, 8)
 explosion_images = explosion_images.get_texture_sequence()
-for explosion_image in explosion_images:
-    center_anchor(explosion_image)
+map(center_anchor, explosion_images)
 explosion_animation = \
     pyglet.image.Animation.from_image_sequence(explosion_images,
                                                EXPLOSION_ANIMATION_PERIOD,
@@ -828,7 +820,7 @@ score_text = pyglet.text.Label('',
                                anchor_x='right',
                                anchor_y='top')
 
-fps_display = pyglet.window.FPSDisplay(win)
+fps_display = pyglet.clock.ClockDisplay(font=pyglet.font.load(FONT_NAME, 24))
 
 bullets = []
 animations = []

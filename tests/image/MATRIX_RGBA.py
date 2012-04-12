@@ -8,7 +8,7 @@ end the test.
 '''
 
 __docformat__ = 'restructuredtext'
-__version__ = '$Id$'
+__version__ = '$Id: MATRIX_RGBA.py 1768 2008-02-17 12:45:54Z Alex.Holkner $'
 
 import unittest
 import base_load

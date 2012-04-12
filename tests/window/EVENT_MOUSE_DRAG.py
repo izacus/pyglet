@@ -11,7 +11,7 @@ Expected behaviour:
 '''
 
 __docformat__ = 'restructuredtext'
-__version__ = '$Id$'
+__version__ = '$Id: EVENT_MOUSE_DRAG.py 750 2007-03-17 01:16:12Z Alex.Holkner $'
 
 import unittest
 

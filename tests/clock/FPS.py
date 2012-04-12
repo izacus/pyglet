@@ -5,7 +5,7 @@ stimulated at 5 Hz.
 '''
 
 __docformat__ = 'restructuredtext'
-__version__ = '$Id$'
+__version__ = '$Id: FPS.py 2529 2009-10-12 17:39:44Z benjamin.coder.smith@gmail.com $'
 
 import time
 import unittest
@@ -18,6 +18,7 @@ class FPS(unittest.TestCase):
     def test_fps(self):
         clock.set_default(clock.Clock())
         self.assertTrue(clock.get_fps() == 0)
+        clock.tick()
         for i in range(10):
             time.sleep(0.2)
             clock.tick()

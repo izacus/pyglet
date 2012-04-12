@@ -32,18 +32,21 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 # ----------------------------------------------------------------------------
-# $Id$
+# $Id: soundspace.py 2529 2009-10-12 17:39:44Z benjamin.coder.smith@gmail.com $
 
 import math
 import os
 
-import pyglet
 from pyglet.gl import *
+from pyglet import font
+from pyglet import media
+from pyglet import resource
+from pyglet import window
 
 import reader
 
-pyglet.resource.path.append('res')
-pyglet.resource.reindex()
+resource.path.append('res')
+resource.reindex()
 
 # Check for AVbin
 try:
@@ -107,14 +110,14 @@ class Handle(object):
 class LabelHandle(Handle):
     def __init__(self, player):
         super(LabelHandle, self).__init__(player)
-        self.text = pyglet.text.Label('', font_size=10, color=(0, 0, 0, 255),
-                                      anchor_y='top', anchor_x='center')
+        self.text = font.Text(font.load('', 10), '', color=(0, 0, 0, 1),
+                              valign='top', halign='center')
 
     def hit_test(self, x, y, z):
         return None
 
     def draw(self):
-        if hasattr(self.player, 'label'):
+        if hasattr(player, 'label'):
             x, _, y = self.player.position
 
             # ech. fudge scale back to 1
@@ -455,7 +458,7 @@ class ConeOuterGainHandle(SliderHandle):
     def set_value(self, value):
         self.player.cone_outer_gain = value
 
-class SoundSpaceWindow(pyglet.window.Window):
+class SoundSpaceWindow(window.Window):
     def __init__(self, **kwargs):
         kwargs.update(dict(
             caption='Sound Space',
@@ -467,14 +470,13 @@ class SoundSpaceWindow(pyglet.window.Window):
         self.handles = []
         self.more_handles = []
 
-        listener = pyglet.media.get_audio_driver().get_listener()
-        self.handles.append(PositionHandle(listener))
-        self.handles.append(ForwardOrientationHandle(listener))
-        self.handles.append(ListenerVolumeHandle(listener))
-        self.handles.append(LabelHandle(listener))
+        self.handles.append(PositionHandle(media.listener))
+        self.handles.append(ForwardOrientationHandle(media.listener))
+        self.handles.append(ListenerVolumeHandle(media.listener))
+        self.handles.append(LabelHandle(media.listener))
 
-        self.tip = pyglet.text.Label('', font_size=10, color=(0, 0, 0, 255),
-                                     anchor_y='top', anchor_x='center')
+        self.tip = font.Text(font.load('', 10), '', color=(0, 0, 0, 1),
+                             halign='center', valign='top')
         self.tip_player = None
 
         # pixels per unit
@@ -538,22 +540,27 @@ class SoundSpaceWindow(pyglet.window.Window):
                 return handle, offset
         return None, None
 
-    def on_draw(self):
-        glClearColor(.8, .8, .8, 1)
-        self.clear()
-        self.draw_background()
+    def run(self):
+        while not self.has_exit:
+            for player in self.players:
+                player.dispatch_events()
+            self.dispatch_events()
+            glClearColor(.8, .8, .8, 1)
+            self.clear()
+            self.draw_background()
 
-        glPushMatrix()
-        self.camera_transform()
-        for handle in self.handles + self.more_handles:
-            handle.draw()
-        glPopMatrix()
+            glPushMatrix()
+            self.camera_transform()
+            for handle in self.handles + self.more_handles:
+                handle.draw()
+            glPopMatrix()
 
-        if self.tip_player:
-            player_pos = self.player_transform(self.tip_player)
-            self.tip.x = player_pos[0]
-            self.tip.y = player_pos[1] - 15
-            self.tip.draw()
+            if self.tip_player:
+                player_pos = self.player_transform(self.tip_player)
+                self.tip.x = player_pos[0]
+                self.tip.y = player_pos[1] - 15
+                self.tip.draw()
+            self.flip()
 
     def on_mouse_scroll(self, x, y, dx, dy):
         self.zoom += dy * 10
@@ -591,18 +598,17 @@ class PanView(object):
 
 if __name__ == '__main__':
     # We swap Y and Z, moving to left-handed system
-    listener = pyglet.media.get_audio_driver().get_listener()
-    listener.up_orientation = (0, -1, 0)
+    media.listener.up_orientation = (0, -1, 0)
     
     # Start facing up (er, forwards)
-    listener.forward_orientation = (0, 0, 1)
+    media.listener.forward_orientation = (0, 0, 1)
 
-    listener.label = 'Listener'
+    media.listener.label = 'Listener'
 
     w = SoundSpaceWindow()
     r = reader.SpaceReader(w)
-    r.read(pyglet.resource.file('space.txt'))
-    player_group = pyglet.media.PlayerGroup(w.players)
-    player_group.play()
-
-    pyglet.app.run()
+    r.read(resource.file('space.txt'))
+    for player in w.players:
+        player.play()
+        pass
+    w.run()

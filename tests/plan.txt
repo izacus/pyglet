@@ -13,16 +13,12 @@
 top
     top.IMPORT                                  GENERIC
 
-app
-    app.EVENT_LOOP                              GENERIC
-
 graphics
     graphics.GRAPHICS_ALLOCATION                GENERIC
     graphics.IMMEDIATE                          GENERIC
     graphics.IMMEDIATE_INDEXED                  GENERIC
     graphics.RETAINED                           GENERIC
     graphics.RETAINED_INDEXED                   GENERIC
-    graphics.MULTITEXTURE                       GENERIC
 
 window
     window-basic
@@ -66,8 +62,6 @@ window
         window.WINDOW_INITIAL_FULLSCREEN        X11 WIN OSX
         window.WINDOW_SET_FULLSCREEN            X11 WIN OSX
         window.MULTIPLE_SCREEN                  X11 WIN OSX
-        window.MODE_SWITCH                      X11 WIN OSX
-        window.WINDOW_FULLSCREEN_SIZE           X11 WIN OSX
 
     window-event
         window-event-keyboard
@@ -110,7 +104,7 @@ clock
         clock.SCHEDULE                          X11 WIN OSX
         clock.SCHEDULE_INTERVAL                 X11 WIN OSX
         clock.SCHEDULE_ONCE                     X11 WIN OSX
-
+        
     clock-multicore
         clock.MULTICORE                         WIN
 image
@@ -219,8 +213,6 @@ resource
 text
     text.RUNLIST                                GENERIC
     text.EMPTY                                  GENERIC
-    text.EMPTY_BOLD                             GENERIC
-    text.ISSUE_471                              GENERIC
     text.PLAIN                                  GENERIC
     text.CONTENT_VALIGN_BOTTOM                  GENERIC
     text.CONTENT_VALIGN_CENTER                  GENERIC

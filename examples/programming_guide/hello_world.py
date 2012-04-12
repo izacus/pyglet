@@ -37,7 +37,7 @@
 '''
 
 __docformat__ = 'restructuredtext'
-__version__ = '$Id$'
+__version__ = '$Id: hello_world.py 2090 2008-05-29 12:49:25Z Alex.Holkner $'
 
 import pyglet
 

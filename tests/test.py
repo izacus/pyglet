@@ -205,6 +205,7 @@ class TestCase(object):
         if not options.capabilities.intersection(self.capabilities):
             return
 
+        print ("Running Test: %s" % self.name)
         options.log.info('Testing %s.', self)
         if options.pretend:
             return
@@ -234,14 +235,11 @@ class TestCase(object):
         else:
             result = StandardTestResult(self)
 
-        print ("Running Test: %s" % self)
-        if module.__doc__:
-            print module.__doc__
-        print '-' * 78
         if module_interactive:
+            print '-' * 78
+            if module.__doc__:
+                print module.__doc__
             raw_input('Press return to begin test...')
-
-
         suite = unittest.TestLoader().loadTestsFromModule(module)
 
         options.log.info('Begin unit tests for %s', self)
@@ -321,8 +319,7 @@ class TestPlan(TestSection):
                 continue
 
             indent = len(line) - len(line.lstrip())
-            while (sections and sections[-1].indent and
-                   sections[-1].indent > indent):
+            while sections and sections[-1].indent > indent:
                 sections.pop()
 
             if sections[-1].indent is None:
@@ -516,10 +513,8 @@ def main():
         components = [plan.root]
 
     if not errors:
-        print '-' * 78
         for component in components:
             component.test(options)
-        print '-' * 78
 
 if __name__ == '__main__':
     main()

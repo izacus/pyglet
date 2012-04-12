@@ -22,7 +22,7 @@ Expected behaviour:
 '''
 
 __docformat__ = 'restructuredtext'
-__version__ = '$Id$'
+__version__ = '$Id: WINDOW_SET_VSYNC.py 1051 2007-07-18 13:25:58Z Alex.Holkner $'
 
 import unittest
 

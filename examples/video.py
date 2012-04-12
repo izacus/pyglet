@@ -43,7 +43,7 @@ See the Programming Guide for a partial list of supported video formats.
 '''
 
 __docformat__ = 'restructuredtext'
-__version__ = '$Id$'
+__version__ = '$Id: video.py 1967 2008-03-23 07:02:51Z Alex.Holkner $'
 
 import sys
 import pyglet

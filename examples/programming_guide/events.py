@@ -37,7 +37,7 @@
 '''
 
 __docformat__ = 'restructuredtext'
-__version__ = '$Id$'
+__version__ = '$Id: events.py 1966 2008-03-23 07:01:26Z Alex.Holkner $'
 
 import pyglet
 from pyglet.window import key
