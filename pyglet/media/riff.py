@@ -181,7 +181,7 @@ class WaveForm(RIFFForm):
                 return chunk
 
 class WaveSource(StreamingSource):
-    def __init__(self, filename, file=None):
+    def __init__(self, filename, file=None, skip_video=False):
         if file is None:
             file = open(filename, 'rb')
 

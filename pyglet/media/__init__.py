@@ -1366,7 +1366,7 @@ if False:
     import pyglet.media.drivers.directsound
     import pyglet.media.drivers.alsa
 
-def load(filename, file=None, streaming=True):
+def load(filename, file=None, streaming=True, skip_video=True):
     '''Load a source from a file.
 
     Currently the `file` argument is not supported; media files must exist
@@ -1383,7 +1383,7 @@ def load(filename, file=None, streaming=True):
 
     :rtype: `Source`
     '''
-    source = _source_class(filename, file)
+    source = _source_class(filename, file, skip_video=skip_video)
     if not streaming:
         source = StaticSource(source)
     return source

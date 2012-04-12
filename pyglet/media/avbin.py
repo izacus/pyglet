@@ -200,7 +200,7 @@ class BufferedImage(object):
         self.timestamp = timestamp
 
 class AVbinSource(StreamingSource):
-    def __init__(self, filename, file=None):
+    def __init__(self, filename, file=None, skip_video=False):
         if file is not None:
             raise NotImplementedError('TODO: Load from file stream')
 
@@ -210,6 +210,7 @@ class AVbinSource(StreamingSource):
 
         self._video_stream = None
         self._audio_stream = None
+        self._skip_video = skip_video
 
         file_info = AVbinFileInfo()
         file_info.structure_size = ctypes.sizeof(file_info)
@@ -384,8 +385,10 @@ class AVbinSource(StreamingSource):
         player._texture.tex_coords = t[9:12] + t[6:9] + t[3:6] + t[:3]
 
     def _decode_video_packet(self, packet):
-        timestamp = timestamp_from_avbin(packet.timestamp)
+        if self._skip_video:
+            return None
 
+        timestamp = timestamp_from_avbin(packet.timestamp)
         width = self.video_format.width
         height = self.video_format.height
         pitch = width * 3
